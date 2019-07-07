@@ -2,13 +2,13 @@ import pandas as pd
 import os
 import shutil
 import numpy as np
+from _config import DATA_PATH
 
+train_images = DATA_PATH + 'train_images/'
 
-train_images = 'train_images/'
+train_path = DATA_PATH + 'train/'
 
-train_path = 'train/'
-
-validation_path = 'validation/'
+validation_path = DATA_PATH + 'validation/'
 
 train = pd.read_csv('train.csv')
 

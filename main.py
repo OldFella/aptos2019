@@ -16,10 +16,10 @@ Dense_NET = models.DenseNet()
 # DIGIT_NET = models.DenseNet()
 
 # set hyperparameters
-TRAINING_EPOCHS = 4
-NUMBER_OF_TESTS = 1
-LEARNING_RATE = 0.0007
-BATCH_SIZE = 16
+TRAINING_EPOCHS = 3
+NUMBER_OF_TESTS = 2
+LEARNING_RATE = 0.0005
+BATCH_SIZE = 8
 
 # start timer
 start = datetime.now()

@@ -4,7 +4,7 @@ import torch.optim as optim
 from torch import nn
 from load_data import create_loader, train_transforms, validation_transforms
 import torchvision
-# from _config import MODEL_PATH
+from _config import MODEL_PATH
 import copy
 from utils import progress
 import numpy as np
@@ -71,7 +71,7 @@ def train(model = None, criterion = None, training_epochs = 4, batch_size = 32, 
 
 
 		model_name = 'epoch{}.pt'.format(epoch)
-		torch.save(best_model, 'models/' + model_name)
+		torch.save(best_model, MODEL_PATH + model_name)
 		print("\nmodel: " + model_name + " has been saved.")
 		# Validate the result of the epoch
 		test_loss, correct, dataset_size, accuracy_percent = test(validation_loader, model)
