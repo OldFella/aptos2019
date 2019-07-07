@@ -1,7 +1,7 @@
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from _config import MODEL_PATH
+from config import MODEL_PATH
 
 from load_data import create_loader, validation_transforms
 

@@ -4,7 +4,7 @@ import torch.optim as optim
 from torch import nn
 from load_data import create_loader, train_transforms, validation_transforms
 import torchvision
-from _config import MODEL_PATH
+from config import DATA_PATH, MODEL_PATH, TRAIN_PATH, VALIDATION_PATH
 import copy
 from utils import progress
 import numpy as np
@@ -25,14 +25,14 @@ def train(model = None, criterion = None, training_epochs = 4, batch_size = 32, 
 	graph_loss = []
 	graph_accuracy = [(0,0)]
 	graph_validation_loss = []
-	validation_loader = create_loader('validation/', validation_transforms, batch_size = 16)
+	validation_loader = create_loader("validation/", validation_transforms, batch_size = 16)
 	best_model = None
 
 	threshold = 0
 	for epoch in range(training_epochs):
 		running_loss = 0.0
 
-		training_loader = create_loader('train/', train_transforms, batch_size = batch_size)
+		training_loader = create_loader("train/", train_transforms, batch_size = batch_size)
 		average_loss = 0
 		print('')
 		number_of_files = len(training_loader.dataset)
