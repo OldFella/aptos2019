@@ -1,44 +1,62 @@
 import os
 import torch
+from config import MODEL_PATH
 
 from torch import nn
-# from _config import MODEL_PATH, SPLIT_DATA_PATH
 from train import train
 from test import test
-# from prepare_data import create_loader, test_transforms, test_loader, validation_loader
-# from visualize import plot_random_batch, loss_to_epochs, plot_two_graphs
 from datetime import datetime
 import torchvision.models as models
 
 
 # init model
-Dense_NET = models.DenseNet()
-# DIGIT_NET = models.DenseNet()
+Dense_NET = models.densenet161(pretrained = True)
+
+
 
 # set hyperparameters
 TRAINING_EPOCHS = 1
 NUMBER_OF_TESTS = 2
 LEARNING_RATE = 0.0007
-BATCH_SIZE = 8
+BATCH_SIZE = 4
 
 # start timer
 start = datetime.now()
 
 # train
-model = train(
+trained_on_long_tailed_dataset = train(
 	model = Dense_NET,
+	training_data_path = "train/",
 	criterion = nn.CrossEntropyLoss(),
 	training_epochs = TRAINING_EPOCHS,
 	learning_rate = LEARNING_RATE,
 	batch_size = BATCH_SIZE)
 
-#test
-# for i in range(NUMBER_OF_TESTS):
- 	# test(validation_loader, model)
+
+
+
+torch.save(trained_on_long_tailed_dataset[0].state_dict(), MODEL_PATH + "long_tailed_" + trained_on_long_tailed_dataset[1])
+
+
+
+model = trained_on_long_tailed_dataset[0]
+
+model.load_state_dict(torch.load(MODEL_PATH + "long_tailed_" + trained_on_long_tailed_dataset[1]))
+# model.eval()
+
+finetuned_model = train(
+	model = model,
+	training_data_path = "train_even/",
+	criterion = nn.CrossEntropyLoss(),
+	training_epochs = 3,
+	learning_rate = LEARNING_RATE,
+	batch_size = BATCH_SIZE)
+
+
+
+torch.save(finetuned_model[0], MODEL_PATH + "finetuned_" + finetuned_model[1])
+
+
 
 
 print("\nOverall training and testing time: " + str(datetime.now() - start))
-
-# plot loss over epochs
-# loss_to_epochs(graph[0], graph[1], graph[2])
-# plot_two_graphs(graph[0], graph[1])
