@@ -13,7 +13,7 @@ from test import test
 
 
 
-def train(model = None, criterion = None, training_epochs = 4, batch_size = 32, learning_rate = 0.001):
+def train(model = None, training_data_path = "train/", criterion = None, training_epochs = 4, batch_size = 32, learning_rate = 0.001):
 	""" 
 	Runs through the training data, makes a prediction and computes loss, then backpropagates
 	the result through the model and adjusts the weights and biases until a local minimum in the loss
@@ -32,7 +32,7 @@ def train(model = None, criterion = None, training_epochs = 4, batch_size = 32, 
 	for epoch in range(training_epochs):
 		running_loss = 0.0
 
-		training_loader = create_loader("train/", train_transforms, batch_size = batch_size)
+		training_loader = create_loader(training_data_path, train_transforms, batch_size = batch_size)
 		average_loss = 0
 		print('')
 		number_of_files = len(training_loader.dataset)
@@ -44,7 +44,7 @@ def train(model = None, criterion = None, training_epochs = 4, batch_size = 32, 
 			# init optimizer with 0
 			optimizer.zero_grad()
 
-			# rung data trough net
+			# run data trough net
 			outputs = model(inputs)
 
 			# compute loss (compare output to label)
@@ -71,7 +71,7 @@ def train(model = None, criterion = None, training_epochs = 4, batch_size = 32, 
 
 
 		model_name = 'epoch{}.pt'.format(epoch)
-		torch.save(best_model, MODEL_PATH + model_name)
+		# torch.save(best_model, MODEL_PATH + model_name)
 		print("\nmodel: " + model_name + " has been saved.")
 		# Validate the result of the epoch
 		test_loss, correct, dataset_size, accuracy_percent = test(validation_loader, model)
@@ -79,4 +79,4 @@ def train(model = None, criterion = None, training_epochs = 4, batch_size = 32, 
 		graph_validation_loss.append((epoch + 1, test_loss))
 
 		
-	return best_model
+	return model, model_name
