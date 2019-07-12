@@ -17,7 +17,7 @@ Dense_NET = models.densenet161(pretrained = True)
 # set hyperparameters
 TRAINING_EPOCHS = 1
 NUMBER_OF_TESTS = 2
-LEARNING_RATE = 0.0007
+LEARNING_RATE = 0.0001
 BATCH_SIZE = 4
 
 # start timer
@@ -28,7 +28,7 @@ trained_on_long_tailed_dataset = train(
 	model = Dense_NET,
 	training_data_path = "train/",
 	criterion = nn.CrossEntropyLoss(),
-	training_epochs = TRAINING_EPOCHS,
+	training_epochs = 2,
 	learning_rate = LEARNING_RATE,
 	batch_size = BATCH_SIZE)
 
@@ -42,13 +42,14 @@ torch.save(trained_on_long_tailed_dataset[0].state_dict(), MODEL_PATH + "long_ta
 model = trained_on_long_tailed_dataset[0]
 
 model.load_state_dict(torch.load(MODEL_PATH + "long_tailed_" + trained_on_long_tailed_dataset[1]))
-# model.eval()
+
+# model = torch.load(MODEL_PATH + "finetuned_epoch4.pt")
 
 finetuned_model = train(
 	model = model,
 	training_data_path = "train_even/",
 	criterion = nn.CrossEntropyLoss(),
-	training_epochs = 3,
+	training_epochs = 9,
 	learning_rate = LEARNING_RATE,
 	batch_size = BATCH_SIZE)
 
