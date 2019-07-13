@@ -3,10 +3,9 @@ from torch import nn
 from train import train
 from test import test
 from datetime import datetime
-import torchvision.models as models
 import torch
-import os
 import argparse
+import torchvision.models as models
 
 
 
@@ -24,7 +23,7 @@ parser.add_argument('stage_two_epochs', metavar='s2e', type=int,
 # 	help='Number of times, the model goes through test dataset')
 parser.add_argument('learning_rate', metavar='lr', type=float,
 	help='Learning rate')
-parser.add_argument('batch_size', metavar='b', type=int,
+parser.add_argument('batch_size', metavar='bs', type=int,
 	help='Batch size')
 
 
@@ -38,39 +37,36 @@ Dense_NET = models.densenet161(pretrained = True)
 # start timer
 start = datetime.now()
 
-# train
+# train on long tailed training set
 trained_on_long_tailed_dataset = train(
 	model = Dense_NET,
 	training_data_path = "train/",
-	criterion = nn.CrossEntropyLoss(),
 	training_epochs = args.stage_one_epochs,
 	learning_rate = args.learning_rate,
 	batch_size = args.batch_size)
 
 
-
-
+# save models stage_dict after first stage
 torch.save(trained_on_long_tailed_dataset[0].state_dict(), MODEL_PATH + "long_tailed_" + trained_on_long_tailed_dataset[1])
 
 
 
-model = trained_on_long_tailed_dataset[0]
 
+
+# use the model from first stage and load it with the saved stage dict  
+model = trained_on_long_tailed_dataset[0]
 model.load_state_dict(torch.load(MODEL_PATH + "long_tailed_" + trained_on_long_tailed_dataset[1]))
 
-
+# now, do finetuning on the evenly distributed training set
 finetuned_model = train(
 	model = model,
 	training_data_path = "train_even/",
-	criterion = nn.CrossEntropyLoss(),
 	training_epochs = args.stage_two_epochs,
 	learning_rate = args.learning_rate,
 	batch_size = args.batch_size)
 
 
-
 torch.save(finetuned_model[0], MODEL_PATH + "finetuned_" + finetuned_model[1])
-
 
 
 
