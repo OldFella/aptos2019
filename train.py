@@ -1,6 +1,7 @@
 import torch
 import torch.optim as optim
 
+
 from torch import nn
 from load_data import create_loader, train_transforms, validation_transforms
 import torchvision
@@ -10,6 +11,7 @@ from utils import progress
 import numpy as np
 # import visualize
 from test import test
+
 
 
 
@@ -67,7 +69,10 @@ def train(model = None, training_data_path = "train/", criterion = None, trainin
 				
 
 			# Progress bar
-			progress(i, number_of_files/batch_size, epoch + 1, '{}/{:.0f} Loss: {:.2f}'.format(i, number_of_files/batch_size, average_loss))
+			progress(
+				i, 
+				number_of_files/batch_size, epoch + 1,
+				'{}/{:.0f} Loss: {:.2f}'.format(i, number_of_files/batch_size, average_loss))
 
 
 		model_name = 'epoch{}.pt'.format(epoch)
@@ -79,4 +84,4 @@ def train(model = None, training_data_path = "train/", criterion = None, trainin
 		graph_validation_loss.append((epoch + 1, test_loss))
 
 		
-	return model, model_name
+	return model, model_name # return namedtuple

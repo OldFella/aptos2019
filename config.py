@@ -1,8 +1,7 @@
 import os
 
 PATH = os.path.dirname(os.path.realpath(__file__))
-DATA_PATH = os.path.dirname(os.path.realpath(".")) + "/"
-
+DATA_PATH = os.path.dirname(os.path.realpath(".")) + "/" # directory below the one, where this file is located
 
 ORIGINAL_TRAIN_PATH = DATA_PATH + "train_images/"
 MODEL_PATH = DATA_PATH + "models/"
