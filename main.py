@@ -31,8 +31,6 @@ parser.add_argument('batch_size', metavar='bs', type=int,
 args = parser.parse_args()
 
 
-print(type(args.batch_size))
-
 # init model
 Dense_NET = models.densenet161(pretrained = True)
 
