@@ -31,6 +31,8 @@ parser.add_argument('batch_size', metavar='bs', type=int,
 args = parser.parse_args()
 
 
+print(type(args.batch_size))
+
 # init model
 Dense_NET = models.densenet161(pretrained = True)
 
@@ -42,6 +44,7 @@ trained_on_long_tailed_dataset = train(
 	model = Dense_NET,
 	training_data_path = "train/",
 	training_epochs = args.stage_one_epochs,
+	criterion = nn.CrossEntropyLoss(),
 	learning_rate = args.learning_rate,
 	batch_size = args.batch_size)
 
@@ -62,6 +65,7 @@ finetuned_model = train(
 	model = model,
 	training_data_path = "train_even/",
 	training_epochs = args.stage_two_epochs,
+	criterion = nn.CrossEntropyLoss(),	
 	learning_rate = args.learning_rate,
 	batch_size = args.batch_size)
 
