@@ -62,8 +62,10 @@ if args.stage_one_epochs != 0:
 	model.load_state_dict(torch.load(MODEL_PATH + "long_tailed_" + trained_on_long_tailed_dataset[1]))
 
 else:
-	model = torch.load(MODEL_PATH + 'finetuned_epoch8.pt')
-
+	Dense_NET.load_state_dict(torch.load(MODEL_PATH + "reference_model.pt"))
+	model = Dense_NET
+	# model = torch.load(MODEL_PATH + 'finetuned_epoch8.pt')
+	# model = Dense_NET.load_state_dict(torch.load(MODEL_PATH + "finetuned_epoch8.pt")['state_dict'])
 
 # now, do finetuning on the evenly distributed training set
 finetuned_model = train(
