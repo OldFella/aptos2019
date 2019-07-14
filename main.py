@@ -37,26 +37,33 @@ Dense_NET = models.densenet161(pretrained = True)
 # start timer
 start = datetime.now()
 
-# train on long tailed training set
-trained_on_long_tailed_dataset = train(
-	model = Dense_NET,
-	training_data_path = "train/",
-	training_epochs = args.stage_one_epochs,
-	criterion = nn.CrossEntropyLoss(),
-	learning_rate = args.learning_rate,
-	batch_size = args.batch_size)
+
+if args.stage_one_epochs != 0:
+
+	# train on long tailed training set
+	trained_on_long_tailed_dataset = train(
+		model = Dense_NET,
+		training_data_path = "train/",
+		training_epochs = args.stage_one_epochs,
+		criterion = nn.CrossEntropyLoss(),
+		learning_rate = args.learning_rate,
+		batch_size = args.batch_size)
 
 
-# save models stage_dict after first stage
-torch.save(trained_on_long_tailed_dataset[0].state_dict(), MODEL_PATH + "long_tailed_" + trained_on_long_tailed_dataset[1])
+	# save models stage_dict after first stage
+	torch.save(trained_on_long_tailed_dataset[0].state_dict(), MODEL_PATH + "long_tailed_" + trained_on_long_tailed_dataset[1])
 
 
 
 
 
-# use the model from first stage and load it with the saved stage dict  
-model = trained_on_long_tailed_dataset[0]
-model.load_state_dict(torch.load(MODEL_PATH + "long_tailed_" + trained_on_long_tailed_dataset[1]))
+	# use the model from first stage and load it with the saved stage dict  
+	model = trained_on_long_tailed_dataset[0]
+	model.load_state_dict(torch.load(MODEL_PATH + "long_tailed_" + trained_on_long_tailed_dataset[1]))
+
+else:
+	model = torch.load(MODEL_PATH + 'finetuned_epoch8.pt')
+
 
 # now, do finetuning on the evenly distributed training set
 finetuned_model = train(
