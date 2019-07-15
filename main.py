@@ -32,8 +32,9 @@ args = parser.parse_args()
 
 
 # init model
-Dense_NET = models.densenet161(pretrained = True)
-
+# Dense_NET = models.densenet161(pretrained = True)
+Dense_NET = models.resnext50_32x4d(pretrained=False, progress=False)
+# Dense_NET = models.res
 # start timer
 start = datetime.now()
 
@@ -77,7 +78,7 @@ finetuned_model = train(
 	batch_size = args.batch_size)
 
 
-torch.save(finetuned_model[0], MODEL_PATH + "finetuned_" + finetuned_model[1])
+torch.save(finetuned_model[0].state_dict(), MODEL_PATH + "finetuned_" + finetuned_model[1])
 
 
 
