@@ -15,7 +15,7 @@ from config import DATA_PATH
 normalize = transforms.Normalize(mean=[0.485, 0.456, 0.406],std=[0.229, 0.224, 0.225])
 
 train_transforms = transforms.Compose([
-	transforms.Resize((128,128)),
+	transforms.Resize((224,224)),
 	transforms.RandomVerticalFlip(0.5),
 	transforms.RandomHorizontalFlip(0.5),
 	transforms.RandomRotation(360),
@@ -24,7 +24,7 @@ train_transforms = transforms.Compose([
 	])
 
 validation_transforms = transforms.Compose([
-	transforms.Resize((128,128)),
+	transforms.Resize((224,224)),
 	transforms.ToTensor(),
 	normalize
 	])
