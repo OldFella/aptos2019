@@ -33,7 +33,7 @@ args = parser.parse_args()
 
 # init model
 # Dense_NET = models.densenet161(pretrained = True)
-Dense_NET = models.resnext50_32x4d(pretrained=False, progress=False)
+Dense_NET = models.resnext101_32x8d(pretrained=True, progress=False)
 # Dense_NET = models.res
 # start timer
 start = datetime.now()
